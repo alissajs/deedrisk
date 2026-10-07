@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="DeedRisk — Know your property risk before someone else does."/>
+<title>DeedRisk — Know Your Property Risk Before Someone Else Does</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --bg:#09090f;--bg2:#0f1018;--surface:#13141f;--surface2:#191b2a;--surface3:#1f2235;
+  --border:#23263a;--border2:#2d3150;
+  --red:#ff2b2b;--red2:rgba(255,43,43,0.12);--red3:rgba(255,43,43,0.06);
+  --green:#00e0a0;--amber:#ffaa00;--blue:#4da6ff;
+  --text:#eeeef8;--text2:#9499bb;--text3:#525878;
+  --display:'Bebas Neue',sans-serif;
+  --body:'DM Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--body);overflow-x:hidden}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;backdrop-filter:blur(20px);background:rgba(9,9,15,0.9);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-hex{width:34px;height:34px;background:var(--red);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);display:grid;place-items:center;font-family:var(--display);font-size:13px;color:#fff;flex-shrink:0}
+.nav-brand{font-family:var(--display);font-size:20px;letter-spacing:1px}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-link{font-size:13px;font-weight:500;color:var(--text2);text-decoration:none;background:none;border:none;cursor:pointer;transition:color 0.15s;font-family:var(--body)}
+.nav-link:hover{color:var(--text)}
+.nav-cta{background:var(--red);color:#fff;border:none;padding:10px 22px;border-radius:3px;font-family:var(--body);font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 2px 16px rgba(255,43,43,0.3)}
+.nav-cta:hover{transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 48px 80px;position:relative;overflow:hidden;background:radial-gradient(ellipse 90% 70% at 50% -5%,rgba(255,43,43,0.15) 0%,transparent 65%),var(--bg)}
+.hero-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,43,43,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,43,43,0.04) 1px,transparent 1px);background-size:60px 60px;animation:grid-drift 20s linear infinite}
+@keyframes grid-drift{from{transform:translateY(0)}to{transform:translateY(60px)}}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--red);border:1px solid rgba(255,43,43,0.3);padding:6px 16px;border-radius:2px;margin-bottom:28px}
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.25}}
+.hero-h1{font-family:var(--display);font-size:clamp(52px,9vw,108px);line-height:0.92;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;position:relative;z-index:1}
+.hero-h1 .red{color:var(--red)}
+.hero-h1 .outline{-webkit-text-stroke:2px rgba(255,255,255,0.15);color:transparent}
+.hero-sub{font-size:clamp(15px,2vw,18px);color:var(--text2);font-weight:300;max-width:560px;line-height:1.65;margin-bottom:44px;position:relative;z-index:1}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.btn-primary{background:var(--red);color:#fff;border:none;padding:17px 40px;border-radius:3px;font-family:var(--body);font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 32px rgba(255,43,43,0.4)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(255,43,43,0.5)}
+.btn-secondary{background:rgba(255,255,255,0.04);color:var(--text);border:1px solid var(--border2);padding:17px 32px;border-radius:3px;font-family:var(--body);font-size:15px;font-weight:500;cursor:pointer;transition:all 0.2s}
+.btn-secondary:hover{background:rgba(255,255,255,0.07)}
+.hero-stats{display:flex;gap:56px;margin-top:72px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.hstat{text-align:center}
+.hstat-n{font-family:var(--display);font-size:46px;color:var(--red);line-height:1}
+.hstat-l{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-top:6px;line-height:1.4}
+
+/* TICKER */
+.ticker-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);padding:14px 0}
+.ticker-track{display:flex;width:max-content;animation:ticker 28s linear infinite}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item{display:flex;align-items:center;gap:10px;padding:0 32px;font-family:var(--mono);font-size:11px;color:var(--text3);white-space:nowrap;border-right:1px solid var(--border)}
+.ticker-item.alert{color:var(--red)}
+
+/* SECTIONS */
+.section{padding:100px 48px;position:relative}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-label{font-family:var(--mono);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:16px}
+.section-title{font-family:var(--display);font-size:clamp(36px,5vw,60px);letter-spacing:1px;line-height:1;margin-bottom:18px}
+.section-sub{font-size:16px;color:var(--text2);line-height:1.65;max-width:560px;font-weight:300}
+.bg2{background:var(--bg2)}
+
+/* HOW */
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px}
+.how-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:32px 28px;transition:all 0.2s}
+.how-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+.how-icon{font-size:28px;margin-bottom:18px}
+.how-title{font-size:18px;font-weight:700;margin-bottom:10px}
+.how-text{font-size:14px;color:var(--text2);line-height:1.65}
+
+/* DEMO */
+.demo-inner{max-width:680px;margin:0 auto;text-align:center}
+.demo-lookup{display:flex;margin:36px 0 0;border:1px solid var(--border2);border-radius:4px;overflow:hidden}
+.demo-input{flex:1;background:var(--surface2);border:none;color:var(--text);padding:16px 20px;font-family:var(--body);font-size:15px;outline:none}
+.demo-input::placeholder{color:var(--text3)}
+.demo-select{background:var(--surface3);border:none;border-left:1px solid var(--border2);color:var(--text2);padding:16px;font-family:var(--body);font-size:14px;cursor:pointer;outline:none}
+.demo-btn{background:var(--red);color:#fff;border:none;padding:16px 28px;font-family:var(--body);font-size:14px;font-weight:700;cursor:pointer}
+.demo-quick{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:center}
+.demo-quick-btn{font-family:var(--mono);font-size:11px;color:var(--text3);border:1px solid var(--border);background:none;padding:5px 12px;border-radius:2px;cursor:pointer}
+.demo-quick-btn:hover{color:var(--red);border-color:rgba(255,43,43,0.3)}
+.demo-result{margin-top:28px;text-align:left;display:none}
+.demo-result.show{display:block}
+.result-card{background:var(--surface2);border:1px solid var(--border2);border-radius:6px;overflow:hidden}
+.result-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)}
+.result-addr{font-size:15px;font-weight:700}
+.result-bbl{font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:3px}
+.risk-pill{font-family:var(--mono);font-size:10px;padding:5px 12px;border-radius:20px;font-weight:500;white-space:nowrap}
+.risk-high{background:var(--red2);color:var(--red);border:1px solid rgba(255,43,43,0.3)}
+.risk-low{background:rgba(0,224,160,0.08);color:var(--green);border:1px solid rgba(0,224,160,0.2)}
+.result-body{padding:20px}
+.result-row{display:flex;justify-content:space-between;margin-bottom:14px;font-size:13px}
+.result-label{color:var(--text3);font-family:var(--mono);font-size:11px}
+.result-flags{margin-top:16px;display:flex;flex-wrap:wrap;gap:6px}
+.rflag{font-family:var(--mono);font-size:10px;padding:4px 10px;background:var(--red2);color:var(--red);border:1px solid rgba(255,43,43,0.2);border-radius:2px}
+.result-actions{display:flex;gap:10px;margin-top:18px}
+.ract{flex:1;padding:11px;border-radius:3px;font-family:var(--body);font-size:13px;font-weight:600;cursor:pointer;text-align:center;border:none}
+.ract-p{background:var(--red);color:#fff}
+.ract-s{background:var(--surface3);color:var(--text);border:1px solid var(--border2)}
+.loading-bar{height:2px;background:var(--border);border-radius:1px;overflow:hidden;margin-top:20px;display:none}
+.loading-bar.show{display:block}
+.loading-fill{height:100%;background:var(--red);border-radius:1px;animation:load 1.2s ease both}
+@keyframes load{from{width:0}to{width:100%}}
+
+/* PITCH */
+.pitch-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.pitch-quote{font-size:clamp(18px,2.5vw,24px);line-height:1.5;color:var(--text2);font-style:italic;margin:28px 0;padding-left:24px;border-left:3px solid var(--red)}
+.pitch-quote strong{color:var(--text);font-style:normal}
+.delivs{display:flex;flex-direction:column;gap:12px;margin-top:32px}
+.deliv{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text2)}
+.deliv::before{content:'';width:6px;height:6px;border-radius:1px;background:var(--red);flex-shrink:0}
+.agency-list{display:flex;flex-direction:column;gap:14px}
+.agency-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:18px 20px}
+.agency-name{font-size:14px;font-weight:700;margin-bottom:4px}
+.agency-role{font-size:12px;color:var(--text3);font-family:var(--mono)}
+
+/* WAITLIST */
+.waitlist-inner{max-width:640px;margin:0 auto;text-align:center}
+.wl-tabs{display:flex;border:1px solid var(--border);border-radius:3px;overflow:hidden;width:fit-content;margin:32px auto 0}
+.wl-tab{padding:10px 28px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);font-family:var(--body);transition:all 0.2s}
+.wl-tab.active{background:var(--red);color:#fff}
+.wl-form{margin-top:28px;display:flex;flex-direction:column;gap:14px}
+.wl-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.wl-input{width:100%;background:var(--surface);border:1px solid var(--border2);color:var(--text);padding:14px 18px;border-radius:3px;font-family:var(--body);font-size:14px;outline:none;transition:border-color 0.2s}
+.wl-input:focus{border-color:var(--red)}
+.wl-input::placeholder{color:var(--text3)}
+.wl-select{width:100%;background:var(--surface);border:1px solid var(--border2);color:var(--text);padding:14px 18px;border-radius:3px;font-family:var(--body);font-size:14px;outline:none;cursor:pointer;appearance:none}
+.wl-submit{width:100%;background:var(--red);color:#fff;border:none;padding:16px;border-radius:3px;font-family:var(--body);font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 24px rgba(255,43,43,0.3);transition:all 0.2s}
+.wl-submit:hover{transform:translateY(-1px)}
+.wl-success{margin-top:28px;background:rgba(0,224,160,0.08);border:1px solid rgba(0,224,160,0.25);border-radius:6px;padding:32px;display:none}
+.wl-success.show{display:block}
+.wl-success h3{font-size:20px;font-weight:700;color:var(--green);margin-bottom:8px}
+.wl-success p{font-size:13px;color:var(--text3);font-family:var(--mono);line-height:1.6}
+.trust-row{display:flex;justify-content:center;gap:32px;margin-top:40px;flex-wrap:wrap}
+.trust-item{font-family:var(--mono);font-size:11px;color:var(--text3);display:flex;align-items:center;gap:6px}
+.trust-item::before{content:'✓';color:var(--green)}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-family:var(--mono);font-size:11px;color:var(--text3)}
+.footer-logo{display:flex;align-items:center;gap:8px}
+.footer-links{display:flex;gap:24px}
+.footer-link{color:var(--text3);text-decoration:none;cursor:pointer;background:none;border:none;font-family:var(--mono);font-size:11px}
+.footer-link:hover{color:var(--text2)}
+
+/* NEIGHBORHOODS */
+.nbhd-wrap{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.nbhd{font-family:var(--mono);font-size:12px;padding:8px 16px;border-radius:2px;color:var(--text2);background:var(--surface);border:1px solid var(--border2)}
+.nbhd.hot{border-color:rgba(255,43,43,0.35);color:var(--red);background:rgba(255,43,43,0.06)}
+
+@media(max-width:900px){
+  .nav-links,.nav-cta{display:none}
+  .section{padding:72px 24px}
+  .hero{padding:100px 24px 60px}
+  .hero-stats{gap:32px}
+  .pitch-grid,.how-grid{grid-template-columns:1fr;gap:32px}
+  .footer{padding:32px 24px}
+  .nav{padding:16px 24px}
+  .wl-row{grid-template-columns:1fr}
+  .demo-lookup{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="nav-hex">DR</div>
+    <div class="nav-brand">DeedRisk</div>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How It Works</button>
+    <button class="nav-link" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Live Demo</button>
+    <button class="nav-link" onclick="document.getElementById('pitch').scrollIntoView({behavior:'smooth'})">For Agencies</button>
+    <button class="nav-link" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Get Access</button>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Protect My Property</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-eyebrow">Property Ownership Intelligence</div>
+  <h1 class="hero-h1">
+    Know Your<br>
+    <span class="red">Property Risk</span><br>
+    <span class="outline">Before Someone</span><br>
+    <span class="red" style="font-size:0.8em">Else Does.</span>
+  </h1>
+  <p class="hero-sub">Real-time monitoring of NYC property records. DeedRisk alerts homeowners the moment a suspicious deed transfer is detected — before displacement happens.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Check My Property</button>
+    <button class="btn-secondary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">See Live Demo →</button>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n">3,800+</div><div class="hstat-l">Deed theft cases<br>NYC since 2014</div></div>
+    <div class="hstat"><div class="hstat-n">$0</div><div class="hstat-l">Most fraudulent<br>deeds recorded for</div></div>
+    <div class="hstat"><div class="hstat-n">72 hrs</div><div class="hstat-l">Avg time before<br>owner is notified</div></div>
+    <div class="hstat"><div class="hstat-n">500K+</div><div class="hstat-l">Homeowners in<br>high-risk ZIP codes</div></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-inner">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Three Steps. Zero Technical Skill Required.</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-icon">📍</div>
+        <div class="how-title">Register Your Property</div>
+        <div class="how-text">Enter your address or BBL. We pull your ACRIS record and create a baseline ownership snapshot.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-icon">🔐</div>
+        <div class="how-title">Set Your Owner Lock</div>
+        <div class="how-text">Declare your intent: not selling. Any deed that conflicts with your profile is flagged as immediately high-risk.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-icon">🚨</div>
+        <div class="how-title">Get Instant Alerts</div>
+        <div class="how-text">The moment a new document is recorded on your property, we notify you via email or SMS with direct links to ACRIS and legal resources.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DEMO -->
+<section class="section bg2" id="demo">
+  <div class="section-inner">
+    <div class="demo-inner">
+      <div class="section-label">Live Demo</div>
+      <h2 class="section-title">Check Any NYC Property Now</h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center">Powered by NYC ACRIS Open Data. Try a real address or use one of the examples below.</p>
+      <div class="demo-lookup">
+        <input class="demo-input" id="demo-addr" placeholder="Enter a NYC property address" onkeydown="if(event.key==='Enter')runDemo()"/>
+        <select class="demo-select" id="demo-boro">
+          <option>Brooklyn</option><option>Bronx</option><option>Manhattan</option><option>Queens</option><option>Staten Island</option>
+        </select>
+        <button class="demo-btn" onclick="runDemo()">Check Now</button>
+      </div>
+      <div class="demo-quick">
+        <button class="demo-quick-btn" onclick="quickDemo('1847 Fulton St')">1847 Fulton St</button>
+        <button class="demo-quick-btn" onclick="quickDemo('543 E 169th St')">543 E 169th St</button>
+        <button class="demo-quick-btn" onclick="quickDemo('123 Monroe St')">123 Monroe St</button>
+      </div>
+      <div class="loading-bar" id="loading"><div class="loading-fill"></div></div>
+      <div class="demo-result" id="demo-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PITCH -->
+<section class="section" id="pitch">
+  <div class="section-inner">
+    <div class="pitch-grid">
+      <div>
+        <div class="section-label">The Pitch</div>
+        <h2 class="section-title">NYC Has The Data. We Built The Warning Layer.</h2>
+        <div class="pitch-quote">"NYC has property records. NYC has complaint systems. What it does not have is a <strong>simple risk-scoring layer</strong> that warns vulnerable homeowners <strong>before</strong> deed fraud becomes an eviction crisis."</div>
+        <div class="delivs">
+          <div class="deliv">Powered by NYC ACRIS public property records</div>
+          <div class="deliv">Risk-scoring engine with explainable fraud flags</div>
+          <div class="deliv">SaaS tool for legal aid orgs and city agencies</div>
+          <div class="deliv">Civic tech grant eligible — housing justice alignment</div>
+          <div class="deliv">Scalable to any city with public property records</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:16px">Focus Neighborhoods</div>
+        <div class="nbhd-wrap">
+          <div class="nbhd hot">Bed-Stuy</div>
+          <div class="nbhd hot">Crown Heights</div>
+          <div class="nbhd hot">Brownsville</div>
+          <div class="nbhd hot">East New York</div>
+          <div class="nbhd">Jamaica</div>
+          <div class="nbhd">Southeast Queens</div>
+          <div class="nbhd">Harlem</div>
+          <div class="nbhd">South Bronx</div>
+          <div class="nbhd">Flatbush</div>
+          <div class="nbhd">Canarsie</div>
+        </div>
+        <div class="agency-list" style="margin-top:24px">
+          <div class="agency-item"><div class="agency-name">NYC Dept. of Finance</div><div class="agency-role">ACRIS records · data foundation</div></div>
+          <div class="agency-item"><div class="agency-name">NY Attorney General</div><div class="agency-role">Deed theft complaint integration</div></div>
+          <div class="agency-item"><div class="agency-name">Legal Aid Organizations</div><div class="agency-role">Case referral pipeline</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="section bg2" id="waitlist">
+  <div class="section-inner">
+    <div class="waitlist-inner">
+      <div class="section-label">Get Early Access</div>
+      <h2 class="section-title">Protect Your Property.<br>Or Partner With Us.</h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center">Homeowners: join the free waitlist. Agencies and orgs: request early access.</p>
+      <div class="wl-tabs">
+        <button class="wl-tab active" id="tab-home" onclick="switchTab('homeowner')">I am a Homeowner</button>
+        <button class="wl-tab" id="tab-agency" onclick="switchTab('agency')">Agency or Org</button>
+      </div>
+      <div class="wl-form" id="wl-form">
+        <div class="wl-row">
+          <input class="wl-input" id="wl-name" placeholder="Full name" />
+          <input class="wl-input" id="wl-email" type="email" placeholder="Email address" />
+        </div>
+        <div class="wl-row" id="wl-home-fields">
+          <input class="wl-input" type="tel" placeholder="Phone (optional)" />
+          <select class="wl-select"><option value="">Your borough</option><option>Brooklyn</option><option>Bronx</option><option>Manhattan</option><option>Queens</option><option>Staten Island</option></select>
+        </div>
+        <div class="wl-row" id="wl-agency-fields" style="display:none">
+          <input class="wl-input" placeholder="Organization name" />
+          <select class="wl-select"><option value="">Role or type</option><option>City Agency</option><option>Legal Aid</option><option>Housing Nonprofit</option><option>Law Firm</option><option>Community Org</option><option>Other</option></select>
+        </div>
+        <button class="wl-submit" id="wl-submit" onclick="submitWL()">Join Waitlist — Free</button>
+      </div>
+      <div class="wl-success" id="wl-success">
+        <div style="font-size:36px;margin-bottom:10px">🔐</div>
+        <h3>You are on the list.</h3>
+        <p id="wl-success-msg">We will alert you when DeedRisk launches in your neighborhood.</p>
+      </div>
+      <div class="trust-row">
+        <div class="trust-item">Free for homeowners</div>
+        <div class="trust-item">No data sold</div>
+        <div class="trust-item">NYC ACRIS-powered</div>
+        <div class="trust-item">Built for Bed-Stuy first</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">
+    <div class="nav-hex" style="width:24px;height:24px;font-size:10px">DR</div>
+    <span>DeedRisk 2026</span>
+  </div>
+  <div class="footer-links">
+    <button class="footer-link" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">How It Works</button>
+    <button class="footer-link" onclick="document.getElementById('pitch').scrollIntoView({behavior:'smooth'})">For Agencies</button>
+    <button class="footer-link" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Get Access</button>
+  </div>
+  <div>Data: NYC Open Data ACRIS · Not legal advice · Deed fraud? Call 311</div>
+</footer>
+
+<script>
+// TICKER
+const ITEMS = [
+  {t:"DEED recorded · 543 E 169th St, Bronx · $0 consideration · LLC grantee",a:true},
+  {t:"ACRIS monitoring active · Brooklyn · 14 properties flagged",a:false},
+  {t:"DEED recorded · 1847 Fulton St, Brooklyn · HIGH RISK",a:true},
+  {t:"Property Ownership Intelligence · Powered by NYC ACRIS Open Data",a:false},
+  {t:"DEED recorded · 92-44 190th St, Queens · $1 consideration",a:true},
+  {t:"DeedRisk · Early Access · Free for Homeowners",a:false},
+];
+const track = document.getElementById('ticker');
+const doubled = [...ITEMS,...ITEMS];
+doubled.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'ticker-item' + (item.a?' alert':'');
+  el.textContent = item.t;
+  track.appendChild(el);
+});
+
+// DEMO DATA
+const DEMO = {
+  "1847 Fulton St":{address:"1847 Fulton St, Brooklyn, NY 11233",bbl:"3-016890-0012",owner:"Marcus T. Williams",filing:"Apr 24, 2026",grantee:"Fulton Capital LLC",price:"$0.00",risk:"high",flags:["$0 consideration","LLC grantee","no mortgage","Owner Lock conflict"]},
+  "543 E 169th St":{address:"543 E 169th St, Bronx, NY 10456",bbl:"2-024800-0041",owner:"Rosa Delgado",filing:"Apr 22, 2026",grantee:"Bronx Acquisitions Group LLC",price:"$10.00",risk:"high",flags:["nominal consideration","LLC grantee","no attorney listed"]},
+  "123 Monroe St":{address:"123 Monroe St, Brooklyn, NY 11216",bbl:"3-018440-0022",owner:"Jane Doe",filing:"Jan 15, 2024",grantee:"Jane Doe",price:"$680,000",risk:"low",flags:[]},
+};
+
+function quickDemo(addr){
+  document.getElementById('demo-addr').value = addr;
+  runDemo();
+}
+
+function runDemo(){
+  const addr = document.getElementById('demo-addr').value;
+  if(!addr.trim()) return;
+  const loading = document.getElementById('loading');
+  const result = document.getElementById('demo-result');
+  loading.className = 'loading-bar show';
+  result.className = 'demo-result';
+  setTimeout(()=>{
+    loading.className = 'loading-bar';
+    const key = Object.keys(DEMO).find(k=>addr.toLowerCase().includes(k.toLowerCase()));
+    const d = key ? DEMO[key] : {address:addr+', NY',bbl:'BBL-PENDING',owner:'Owner (from ACRIS)',filing:'Jan 2024',grantee:'Current Owner',price:'N/A',risk:'low',flags:[]};
+    const pillClass = d.risk==='high'?'risk-pill risk-high':'risk-pill risk-low';
+    const pillText = d.risk==='high'?'🚨 HIGH RISK':'✓ LOW RISK';
+    const flagsHTML = d.flags.length ? '<div class="result-flags">'+d.flags.map(f=>'<span class="rflag">'+f+'</span>').join('')+'</div>' : '';
+    result.innerHTML = '<div class="result-card"><div class="result-header"><div><div class="result-addr">'+d.address+'</div><div class="result-bbl">BBL: '+d.bbl+'</div></div><span class="'+pillClass+'">'+pillText+'</span></div><div class="result-body"><div class="result-row"><span class="result-label">Owner on record</span><span>'+d.owner+'</span></div><div class="result-row"><span class="result-label">Last filing</span><span>DEED · '+d.filing+'</span></div><div class="result-row"><span class="result-label">Grantee</span><span>'+d.grantee+'</span></div><div class="result-row"><span class="result-label">Consideration</span><span>'+d.price+'</span></div>'+flagsHTML+'<div class="result-actions"><button class="ract ract-p" onclick="document.getElementById(\'waitlist\').scrollIntoView({behavior:\'smooth\'})">Monitor This Property</button><button class="ract ract-s">View ACRIS Filing</button></div></div></div>';
+    result.className = 'demo-result show';
+  },1100);
+}
+
+// TABS
+var currentTab = 'homeowner';
+function switchTab(t){
+  currentTab = t;
+  document.getElementById('tab-home').className = 'wl-tab'+(t==='homeowner'?' active':'');
+  document.getElementById('tab-agency').className = 'wl-tab'+(t==='agency'?' active':'');
+  document.getElementById('wl-home-fields').style.display = t==='homeowner'?'grid':'none';
+  document.getElementById('wl-agency-fields').style.display = t==='agency'?'grid':'none';
+  document.getElementById('wl-submit').textContent = t==='homeowner'?'Join Waitlist — Free':'Request Early Access';
+}
+
+function submitWL(){
+  const name = document.getElementById('wl-name').value;
+  const email = document.getElementById('wl-email').value;
+  if(!name||!email) return alert('Please enter your name and email.');
+  document.getElementById('wl-form').style.display='none';
+  document.getElementById('wl-success').className='wl-success show';
+  document.getElementById('wl-success-msg').textContent = currentTab==='homeowner'?'We will alert you when DeedRisk launches in your neighborhood.':'We will reach out within 48 hours to discuss early access.';
+}
+</script>
+</body>
+</html>
